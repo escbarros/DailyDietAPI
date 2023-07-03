@@ -32,5 +32,7 @@ export async function MealsRoute(app: FastifyInstance) {
       session_id: sessionId,
       isInDiet,
     });
+
+    return res.status(201);
   });
 }
