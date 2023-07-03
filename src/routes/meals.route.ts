@@ -33,6 +33,6 @@ export async function MealsRoute(app: FastifyInstance) {
       isInDiet,
     });
 
-    return res.status(201);
+    return res.status(201).send();
   });
 }
