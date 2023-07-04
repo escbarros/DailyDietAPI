@@ -87,4 +87,29 @@ describe("Meals Routes", () => {
       })
     );
   });
+
+  it("should be able to update a meal", async () => {
+    const createNewMealRequest = await request(app.server).post("/meal").send({
+      id: randomUUID(),
+      name: "Refeição de teste",
+      description: "Refeição para teste",
+      isInDiet: true,
+    });
+
+    const cookies = createNewMealRequest.get("Set-Cookie");
+    const getMealsBySessionId = await request(app.server)
+      .get("/meal")
+      .set("Cookie", cookies);
+
+    const { id } = getMealsBySessionId.body.meals[0];
+    await request(app.server)
+      .put(`/meal/${id}`)
+      .set("Cookie", cookies)
+      .send({
+        name: "Nova refeição",
+        description: "Nova descrição",
+        isInDiet: false,
+      })
+      .expect(200);
+  });
 });
