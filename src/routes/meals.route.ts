@@ -5,11 +5,32 @@ import { knex } from "../database";
 import { CheckIfRequstHasSessionId } from "../middlewares/check-if-request-has-session-id";
 
 export async function MealsRoute(app: FastifyInstance) {
-  app.get("/", { preHandler: CheckIfRequstHasSessionId }, async (req, res) => {
-    const sessionId = req.cookies.sessionId;
-    const meals = await knex("meal").select().where("session_id", sessionId);
-    return res.status(200).send({ meals });
-  });
+  app.get(
+    "/",
+    { preHandler: [CheckIfRequstHasSessionId] },
+    async (req, res) => {
+      const sessionId = req.cookies.sessionId;
+      const meals = await knex("meal").select().where("session_id", sessionId);
+      return res.status(200).send({ meals });
+    }
+  );
+
+  app.get(
+    "/:id",
+    { preHandler: [CheckIfRequstHasSessionId] },
+    async (req, res) => {
+      const getMealByIdParamSchema = z.object({
+        id: z.string().uuid(),
+      });
+      const { id } = getMealByIdParamSchema.parse(req.params);
+      const { sessionId } = req.cookies;
+      const meal = await knex("meal")
+        .where({ id, session_id: sessionId })
+        .select();
+
+      return res.status(200).send({ meal });
+    }
+  );
 
   app.post("/", async (req, res) => {
     const createMealRequisitionSchema = z.object({
