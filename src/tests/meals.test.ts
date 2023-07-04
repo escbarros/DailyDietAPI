@@ -132,7 +132,7 @@ describe("Meals Routes", () => {
       .set("Cookie", cookies)
       .expect(204);
   });
-  it.only("should be able to get user metrics", async () => {
+  it("should be able to get user metrics", async () => {
     const createNewMealRequest = await request(app.server).post("/meal").send({
       id: randomUUID(),
       name: "Refeição de teste",
