@@ -1,21 +1,25 @@
-[ ] Deve ser possivel criar um usuário
-[ ] Deve ser possível identificar o usuário entre as requisições
-[ ] Deve ser possível registrar uma refeição feita, com as seguintes informações:
-    
-    *As refeições devem ser relacionadas a um usuário.*
-    
-    [ ] Nome
-    [ ] Descrição
-    [ ] Data e Hora
-    [ ] Está dentro ou não da dieta
+# Desafio #2 - Daily Diet 
 
-[ ] Deve ser possível editar uma refeição, podendo alterar todos os dados acima
-[ ] Deve ser possível apagar uma refeição
-[ ] Deve ser possível listar todas as refeições de um usuário
-[ ] Deve ser possível visualizar uma única refeição
-[ ] Deve ser possível recuperar as métricas de um usuário
-    [ ] Quantidade total de refeições registradas
-    [ ] Quantidade total de refeições dentro da dieta
-    [ ] Quantidade total de refeições fora da dieta
-    [ ] Melhor sequência de refeições dentro da dieta
-[ ] O usuário só pode visualizar, editar e apagar as refeições o qual ele criou
+Este é um projeto do Desafio #2 proposto pela Rocketseat para testar os conhecimentos em Node.js. O objetivo é desenvolver uma API REST utilizando o framework Fastify e a biblioteca Knex. Além disso, o projeto utiliza o Dotenv para configuração de ambientes e o Zod para validação de dados.
+
+[Instruções](https://efficient-sloth-d85.notion.site/Desafio-02-be7cdb37aaf74ba898bc6336427fa410)
+## Tecnologias Utilizadas
+
+- Node.js
+- Fastify
+- Knex
+- Dotenv
+- Zod
+
+## Executando o Projeto
+
+Siga as etapas abaixo para executar o projeto em sua máquina local:
+
+1. Clone este repositório para o seu diretório local.
+2. Navegue até o diretório clonado: `cd daily-diet-api`.
+3. Instale as dependências do projeto: `npm install`.
+4. Renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente, se necessário.
+5. Execute o projeto: `npm start`.
+6. A API estará disponível no endereço `http://localhost:3333`. 
+(a porta padrão é 3333, porem você pode mudar no arquivo .env)
+
