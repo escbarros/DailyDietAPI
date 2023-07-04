@@ -19,7 +19,8 @@ Siga as etapas abaixo para executar o projeto em sua máquina local:
 2. Navegue até o diretório clonado: `cd daily-diet-api`.
 3. Instale as dependências do projeto: `npm install`.
 4. Renomeie o arquivo `.env.example` para `.env` e configure as variáveis de ambiente, se necessário.
-5. Execute o projeto: `npm run dev`.
-6. A API estará disponível no endereço `http://localhost:3333`. 
+5. Crie as tableas do banco de dados: `npm run knex -- migrate:latest`. 
+6. Execute o projeto: `npm run dev`.
+7. A API estará disponível no endereço `http://localhost:3333`. 
 (a porta padrão é 3333, porem você pode mudar no arquivo .env)
 
