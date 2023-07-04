@@ -61,4 +61,31 @@ export async function MealsRoute(app: FastifyInstance) {
 
     return res.status(201).send();
   });
+
+  app.put(
+    "/:id",
+    { preHandler: [CheckIfRequstHasSessionId] },
+    async (req, res) => {
+      const updateMealSchema = z.object({
+        name: z.string(),
+        description: z.string().optional(),
+        isInDiet: z.boolean(),
+      });
+      const updateMealParamSchema = z.object({
+        id: z.string().uuid(),
+      });
+      const { id } = updateMealParamSchema.parse(req.params);
+      const { name, description, isInDiet } = updateMealSchema.parse(req.body);
+      console.log(name, description, isInDiet);
+      const { sessionId } = req.cookies;
+
+      await knex("meal").where({ id, session_id: sessionId }).update({
+        name,
+        description,
+        isInDiet,
+      });
+
+      return res.status(200).send();
+    }
+  );
 }
