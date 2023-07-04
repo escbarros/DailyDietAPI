@@ -112,4 +112,24 @@ describe("Meals Routes", () => {
       })
       .expect(200);
   });
+  it("should be able to delete a meal", async () => {
+    const createNewMealRequest = await request(app.server).post("/meal").send({
+      id: randomUUID(),
+      name: "Refeição de teste",
+      description: "Refeição para teste",
+      isInDiet: true,
+    });
+
+    const cookies = createNewMealRequest.get("Set-Cookie");
+    const getMealsBySessionId = await request(app.server)
+      .get("/meal")
+      .set("Cookie", cookies);
+
+    const { id } = getMealsBySessionId.body.meals[0];
+
+    await request(app.server)
+      .delete(`/meal/${id}`)
+      .set("Cookie", cookies)
+      .expect(204);
+  });
 });
