@@ -88,4 +88,20 @@ export async function MealsRoute(app: FastifyInstance) {
       return res.status(200).send();
     }
   );
+
+  app.delete(
+    "/:id",
+    { preHandler: [CheckIfRequstHasSessionId] },
+    async (req, res) => {
+      const deleteMealParamSchema = z.object({
+        id: z.string().uuid(),
+      });
+      const { id } = deleteMealParamSchema.parse(req.params);
+      const { sessionId } = req.cookies;
+
+      await knex("meal").where({ id, session_id: sessionId }).delete();
+
+      return res.status(204).send();
+    }
+  );
 }
