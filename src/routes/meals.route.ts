@@ -115,7 +115,6 @@ export async function MealsRoute(app: FastifyInstance) {
         .where("isInDiet", true)
         .orderBy("created_at")
         .select();
-      console.log(bestDietSequence);
       res.status(200).send({
         amount: meals.length,
         inDiet: meals.filter((meal) => meal.isInDiet).length,

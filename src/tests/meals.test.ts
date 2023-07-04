@@ -132,4 +132,35 @@ describe("Meals Routes", () => {
       .set("Cookie", cookies)
       .expect(204);
   });
+  it.only("should be able to get user metrics", async () => {
+    const createNewMealRequest = await request(app.server).post("/meal").send({
+      id: randomUUID(),
+      name: "Refeição de teste",
+      description: "Refeição para teste",
+      isInDiet: true,
+    });
+
+    const cookies = createNewMealRequest.get("Set-Cookie");
+    await request(app.server)
+      .post("/meal")
+      .send({
+        id: randomUUID(),
+        name: "Refeição de teste dois",
+        description: "Refeição para teste dois",
+        isInDiet: false,
+      })
+      .set("Cookie", cookies);
+
+    const getUserMetrics = await request(app.server)
+      .get("/meal/metrics")
+      .set("Cookie", cookies);
+    expect(getUserMetrics.body).toEqual(
+      expect.objectContaining({
+        amount: 2,
+        inDiet: 1,
+        outDiet: 1,
+        bestDietSequence: 1,
+      })
+    );
+  });
 });
