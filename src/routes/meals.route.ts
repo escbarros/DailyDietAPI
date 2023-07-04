@@ -2,9 +2,13 @@ import { randomUUID } from "crypto";
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { knex } from "../database";
+import { CheckIfRequstHasSessionId } from "../middlewares/check-if-request-has-session-id";
+
 export async function MealsRoute(app: FastifyInstance) {
-  app.get("/", async (req, res) => {
-    return res.status(200).send("teste");
+  app.get("/", { preHandler: CheckIfRequstHasSessionId }, async (req, res) => {
+    const sessionId = req.cookies.sessionId;
+    const meals = await knex("meal").select().where("session_id", sessionId);
+    return res.status(200).send({ meals });
   });
 
   app.post("/", async (req, res) => {
@@ -27,6 +31,7 @@ export async function MealsRoute(app: FastifyInstance) {
     }
 
     await knex("meal").insert({
+      id: randomUUID(),
       name,
       description,
       session_id: sessionId,
