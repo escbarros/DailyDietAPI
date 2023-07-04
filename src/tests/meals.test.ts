@@ -49,4 +49,42 @@ describe("Meals Routes", () => {
       }),
     ]);
   });
+
+  it("should be able to get a meal by its id", async () => {
+    const createNewMealRequest = await request(app.server).post("/meal").send({
+      id: randomUUID(),
+      name: "Refeição de teste",
+      description: "Refeição para teste",
+      isInDiet: true,
+    });
+
+    const cookies = createNewMealRequest.get("Set-Cookie");
+    await request(app.server)
+      .post("/meal")
+      .send({
+        id: randomUUID(),
+        name: "Refeição de teste dois",
+        description: "Refeição para teste dois",
+        isInDiet: true,
+      })
+      .set("Cookie", cookies);
+
+    const getMealBySessionId = await request(app.server)
+      .get("/meal")
+      .set("Cookie", cookies);
+
+    const { id } = getMealBySessionId.body.meals[0];
+
+    const getMealByItsId = await request(app.server)
+      .get(`/meal/${id}`)
+      .set("Cookie", cookies);
+
+    expect(getMealByItsId.body.meal).toEqual(
+      expect.objectContaining({
+        name: "Refeição de teste",
+        description: "Refeição para teste",
+        isInDiet: 1,
+      })
+    );
+  });
 });
