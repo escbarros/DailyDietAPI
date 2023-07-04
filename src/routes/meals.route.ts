@@ -104,4 +104,24 @@ export async function MealsRoute(app: FastifyInstance) {
       return res.status(204).send();
     }
   );
+  app.get(
+    "/metrics",
+    { preHandler: [CheckIfRequstHasSessionId] },
+    async (req, res) => {
+      const sessionId = req.cookies.sessionId;
+      const meals = await knex("meal").select().where("session_id", sessionId);
+      const bestDietSequence = await knex("meal")
+        .where("session_id", sessionId)
+        .where("isInDiet", true)
+        .orderBy("created_at")
+        .select();
+      console.log(bestDietSequence);
+      res.status(200).send({
+        amount: meals.length,
+        inDiet: meals.filter((meal) => meal.isInDiet).length,
+        outDiet: meals.filter((meal) => !meal.isInDiet).length,
+        bestDietSequence: bestDietSequence.length,
+      });
+    }
+  );
 }
