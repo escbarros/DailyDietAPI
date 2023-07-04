@@ -28,7 +28,7 @@ export async function MealsRoute(app: FastifyInstance) {
         .where({ id, session_id: sessionId })
         .select();
 
-      return res.status(200).send({ meal });
+      return res.status(200).send({ meal: meal[0] });
     }
   );
 
